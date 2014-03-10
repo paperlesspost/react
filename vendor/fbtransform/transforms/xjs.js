@@ -93,6 +93,7 @@ var knownTags = {
   map: true,
   mark: true,
   marquee: true,
+  mask: true,
   menu: true,
   menuitem: true,
   meta: true,
