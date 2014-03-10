@@ -135,6 +135,7 @@ var DefaultDOMPropertyConfig = {
     /**
      * SVG Properties
      */
+    colorInterpolation: MUST_USE_ATTRIBUTE,
     cx: MUST_USE_ATTRIBUTE,
     cy: MUST_USE_ATTRIBUTE,
     d: MUST_USE_ATTRIBUTE,
@@ -172,6 +173,7 @@ var DefaultDOMPropertyConfig = {
     y: MUST_USE_ATTRIBUTE
   },
   DOMAttributeNames: {
+    colorInterpolation: 'color-interpolation',
     className: 'class',
     gradientTransform: 'gradientTransform',
     gradientUnits: 'gradientUnits',
