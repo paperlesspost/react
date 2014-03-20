@@ -61,6 +61,7 @@ var knownTags = {
   fieldset: true,
   figcaption: true,
   figure: true,
+  filter: true,
   footer: true,
   form: true,
   g: true,

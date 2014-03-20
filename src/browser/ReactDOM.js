@@ -183,6 +183,7 @@ var ReactDOM = objMapKeyVal({
   // SVG
   circle: false,
   defs: false,
+  filter: false,
   g: false,
   image: false,
   line: false,

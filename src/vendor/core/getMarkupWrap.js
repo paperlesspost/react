@@ -37,6 +37,7 @@ var shouldWrap = {
   // they will be initialized in the wrong namespace (and will not display).
   'circle': true,
   'defs': true,
+  'filter': true,
   'g': true,
   'image': true,
   'line': true,
@@ -81,6 +82,7 @@ var markupWrap = {
 
   'circle': svgWrap,
   'defs': svgWrap,
+  'filter':svgWrap,
   'g': svgWrap,
   'image': svgWrap,
   'line': svgWrap,
