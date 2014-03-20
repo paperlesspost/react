@@ -490,12 +490,10 @@ var ReactMount = {
           // warning is when the container is empty.
           rootElementsByReactRootID[reactRootID] = containerChild;
         } else {
-          // Disabled for now until #3436441 is fixed.
-          //
-          // console.warn(
-          //   'ReactMount: Root element has been removed from its original ' +
-          //   'container. New container:', rootElement.parentNode
-          // );
+          console.warn(
+            'ReactMount: Root element has been removed from its original ' +
+            'container. New container:', rootElement.parentNode
+          );
         }
       }
     }
@@ -618,8 +616,10 @@ var ReactMount = {
     invariant(
       false,
       'findComponentRoot(..., %s): Unable to find element. This probably ' +
-      'means the DOM was unexpectedly mutated (e.g., by the browser). ' +
-      'Try inspecting the child nodes of the element with React ID `%s`.',
+      'means the DOM was unexpectedly mutated (e.g., by the browser), ' +
+      'usually due to forgetting a <tbody> when using tables or nesting <p> ' +
+      'or <a> tags. Try inspecting the child nodes of the element with React ' +
+      'ID `%s`.',
       targetID,
       ReactMount.getID(ancestorNode)
     );

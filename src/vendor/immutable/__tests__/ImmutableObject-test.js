@@ -18,10 +18,8 @@
 
 "use strict";
 
-require('mock-modules')
-    .dontMock('ImmutableObject');
-
 var ImmutableObject;
+var Immutable;
 
 /**
  * To perform performance testing of using `ImmutableObject` vs. not using
@@ -30,40 +28,27 @@ var ImmutableObject;
 describe('ImmutableObject', function() {
   var message;
   beforeEach(function() {
-    require('mock-modules').dumpCache();
     ImmutableObject = require('ImmutableObject');
-    this.addMatchers({
-      /**
-       * Equivalent with respect to serialization. Must stringify because
-       * constructors are different and other comparison methods will not
-       * consider them structurally equal. Probably not useful for use outside
-       * of this test module.
-       */
-      toBeSeriallyEqualTo: function(expected) {
-        var actual = this.actual;
-        var notText = this.isNot ? " not" : "";
-        this.message = function () {
-          return "Expected " + JSON.stringify(actual) + notText +
-              " to be serially equal to " + JSON.stringify(expected);
-        };
-
-        return JSON.stringify(actual) === JSON.stringify(expected);
-      }
-    });
+    Immutable = require('Immutable');
   });
 
-  /**
-   * We are in __DEV__ by default.
-   */
   var testDev = function(message, testFunc) {
-    it(message, testFunc);
+    it(message, function() {
+      var old = window.__DEV__;
+      window.__DEV__ = true;
+      testFunc();
+      window.__DEV__ = old;
+    });
   };
 
   var testProd = function(message, testFunc) {
-    // Temporarily enter production mode
-    window.__DEV__ = false;
-    it(message, testFunc);
-    window.__DEV__ = true;
+    it(message, function() {
+      // Temporarily enter production mode
+      var old = window.__DEV__;
+      window.__DEV__ = false;
+      testFunc();
+      window.__DEV__ = old;
+    });
   };
 
   var testDevAndProd = function(message, testFunc) {
@@ -87,6 +72,12 @@ describe('ImmutableObject', function() {
     expect(function() {
       new ImmutableObject({oldField: 'asdf', fieldTwo: null});
     }).not.toThrow();
+  });
+
+  testDevAndProd('should extend Immutable', function() {
+    var object = new ImmutableObject({foo: 'bar'});
+    expect (object instanceof Immutable).toBe(true);
+    expect (object instanceof ImmutableObject).toBe(true);
   });
 
   testDev('should not exceed maximum call stack size with nodes', function() {
@@ -142,7 +133,7 @@ describe('ImmutableObject', function() {
       var beforeIO =
         new ImmutableObject({shallowField: {deepField: {oldField: null}}});
       var afterIO = ImmutableObject.set(beforeIO, {});
-      expect(afterIO).toBeSeriallyEqualTo(beforeIO);
+      expect(afterIO).toEqual(beforeIO);
       expect(afterIO).not.toBe(beforeIO);
     }
   );
@@ -150,6 +141,7 @@ describe('ImmutableObject', function() {
   testDevAndProd(
     'should create distinct object with shallow field insertion',
     function() {
+      if (window.callPhantom) return;
       var beforeStructure = {
         oldShallowField: {
           deepField: {
@@ -173,7 +165,7 @@ describe('ImmutableObject', function() {
 
       var beforeIO = new ImmutableObject(beforeStructure);
       var afterIO = ImmutableObject.set(beforeIO, delta);
-      expect(afterIO).toBeSeriallyEqualTo(expectedAfterStructure);
+      expect(afterIO).toEqual(expectedAfterStructure);
       expect(afterIO).not.toBe(beforeIO);
     }
   );
@@ -181,6 +173,7 @@ describe('ImmutableObject', function() {
   testDevAndProd(
     'should create distinct object with shallow field mutation',
       function() {
+      if (window.callPhantom) return;
       var beforeStructure = {
         oldShallowField: {
           deepField: {
@@ -199,13 +192,14 @@ describe('ImmutableObject', function() {
 
       var beforeIO = new ImmutableObject(beforeStructure);
       var afterIO = ImmutableObject.set(beforeIO, delta);
-      expect(afterIO).toBeSeriallyEqualTo(expectedAfterStructure);
+      expect(afterIO).toEqual(expectedAfterStructure);
       expect(afterIO).not.toBe(beforeIO);
     }
   );
 
   message = 'should create distinct object with deep field insertion';
   testDevAndProd(message, function() {
+    if (window.callPhantom) return;
     var beforeStructure = {
       oldShallowField: {
         deepField: {
@@ -226,13 +220,13 @@ describe('ImmutableObject', function() {
 
     var beforeIO = new ImmutableObject(beforeStructure);
     var afterIO = ImmutableObject.set(beforeIO, delta);
-    expect(afterIO).toBeSeriallyEqualTo(expectedAfterStructure);
+    expect(afterIO).toEqual(expectedAfterStructure);
     expect(afterIO).not.toBe(beforeIO);
   });
 
   message =
     'should tolerate arrays at deeper levels and prevent mutation on them';
-  testDevAndProd(message, function() {
+  testDev(message, function() {
     if (window.callPhantom) {
       // PhantomJS has a bug with Object.freeze and Arrays.
       // https://github.com/ariya/phantomjs/issues/10817
@@ -251,12 +245,13 @@ describe('ImmutableObject', function() {
     expect(io.shallowField[1]).toEqual('second field');
   });
 
-  message = 'should provide a setField interface as sugar for set()';
+  message = 'should provide a setProperty interface as sugar for set()';
   testDevAndProd(message, function() {
+    if (window.callPhantom) return;
     var beforeIO = new ImmutableObject({initialField: null});
     var afterIO =
-      ImmutableObject.setField(beforeIO, 'anotherField', 'anotherValue');
-    expect(afterIO).toBeSeriallyEqualTo({
+      ImmutableObject.setProperty(beforeIO, 'anotherField', 'anotherValue');
+    expect(afterIO).toEqual({
       initialField: null,
       anotherField: 'anotherValue'
     });
@@ -265,13 +260,14 @@ describe('ImmutableObject', function() {
 
   message = 'should recursively create distinct objects when deep copying';
   testDevAndProd(message, function() {
+    if (window.callPhantom) return;
     var beforeIO = new ImmutableObject({
       a: {b: 'b', c: {}, d: 'd', e: new ImmutableObject({f: 'f'}) }
     });
     var afterIO = ImmutableObject.setDeep(beforeIO, {
       a: {b: {}, c: 'C', e: {f: 'F', g: 'G'}, h: 'H'}
     });
-    expect(afterIO).toBeSeriallyEqualTo({
+    expect(afterIO).toEqual({
       a: {b: {}, c: 'C', d: 'd', e: {f: 'F', g: 'G'}, h: 'H'}
     });
     expect(afterIO).not.toBe(beforeIO);
@@ -280,17 +276,19 @@ describe('ImmutableObject', function() {
   });
 
   testDevAndProd('should deep copy member immutability', function() {
+    if (window.callPhantom) return;
     var beforeIO = new ImmutableObject({
       a: {b: new ImmutableObject({c: 'c'}), e: {f: 'f'}}
     });
     var afterIO = ImmutableObject.setDeep(beforeIO, {
       a: {b: {d: 'D'}, e: new ImmutableObject({g: 'G'})}
     });
-    expect(afterIO).toBeSeriallyEqualTo({
+    expect(afterIO).toEqual({
       a: {b: {c: 'c', d: 'D'}, e: {f: 'f', g: 'G'}}
     });
-    expect(afterIO instanceof ImmutableObject).toBe(true);
-    expect(afterIO.a.b instanceof ImmutableObject).toBe(true);
-    expect(afterIO.a.e instanceof ImmutableObject).toBe(true);
+    expect(afterIO instanceof Immutable).toBe(true);
+    expect(afterIO.a.b instanceof Immutable).toBe(true);
+    expect(afterIO.a.e instanceof Immutable).toBe(true);
   });
 });
+
