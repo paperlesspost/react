@@ -38,6 +38,7 @@ var shouldWrap = {
   'circle': true,
   'defs': true,
   'filter': true,
+  'feColorMatrix' : true,
   'g': true,
   'image': true,
   'line': true,
@@ -50,7 +51,8 @@ var shouldWrap = {
   'rect': true,
   'stop': true,
   'text': true,
-  'tspan': true
+  'tspan': true,
+  'use': true
 };
 
 var selectWrap = [1, '<select multiple="true">', '</select>'];
@@ -82,6 +84,7 @@ var markupWrap = {
 
   'circle': svgWrap,
   'defs': svgWrap,
+  'feColorMatrix': svgWrap,
   'filter':svgWrap,
   'g': svgWrap,
   'image': svgWrap,
@@ -95,7 +98,8 @@ var markupWrap = {
   'rect': svgWrap,
   'stop': svgWrap,
   'text': svgWrap,
-  'tspan': svgWrap
+  'tspan': svgWrap,
+  'use': svgWrap
 };
 
 /**

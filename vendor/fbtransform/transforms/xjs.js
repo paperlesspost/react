@@ -58,6 +58,7 @@ var knownTags = {
   ellipse: true,
   em: true,
   embed: true,
+  feColorMatrix: true,
   fieldset: true,
   figcaption: true,
   figure: true,
@@ -149,6 +150,7 @@ var knownTags = {
   tspan: true,
   u: true,
   ul: true,
+  use: true,
   'var': true,
   video: true,
   wbr: true

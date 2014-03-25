@@ -183,6 +183,7 @@ var ReactDOM = objMapKeyVal({
   // SVG
   circle: false,
   defs: false,
+  feColorMatrix: false,
   filter: false,
   g: false,
   image: false,
@@ -197,7 +198,8 @@ var ReactDOM = objMapKeyVal({
   stop: false,
   svg: false,
   text: false,
-  tspan: false
+  tspan: false,
+  use: false
 }, createDOMComponentClass);
 
 var injection = {
