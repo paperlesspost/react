@@ -26,6 +26,7 @@ var MUST_USE_ATTRIBUTE = DOMProperty.injection.MUST_USE_ATTRIBUTE;
 
 var SVGDOMPropertyConfig = {
   Properties: {
+    colorInterpolation: MUST_USE_ATTRIBUTE,
     cx: MUST_USE_ATTRIBUTE,
     cy: MUST_USE_ATTRIBUTE,
     d: MUST_USE_ATTRIBUTE,
@@ -33,15 +34,21 @@ var SVGDOMPropertyConfig = {
     dy: MUST_USE_ATTRIBUTE,
     fill: MUST_USE_ATTRIBUTE,
     fillOpacity: MUST_USE_ATTRIBUTE,
+    filter: MUST_USE_ATTRIBUTE,
+    filterUnits: MUST_USE_ATTRIBUTE,
     fontFamily: MUST_USE_ATTRIBUTE,
     fontSize: MUST_USE_ATTRIBUTE,
     fx: MUST_USE_ATTRIBUTE,
     fy: MUST_USE_ATTRIBUTE,
     gradientTransform: MUST_USE_ATTRIBUTE,
     gradientUnits: MUST_USE_ATTRIBUTE,
+    imageRendering: MUST_USE_ATTRIBUTE,
+    in: MUST_USE_ATTRIBUTE,
+    letterSpacing: MUST_USE_ATTRIBUTE,
     markerEnd: MUST_USE_ATTRIBUTE,
     markerMid: MUST_USE_ATTRIBUTE,
     markerStart: MUST_USE_ATTRIBUTE,
+    mask: MUST_USE_ATTRIBUTE,
     offset: MUST_USE_ATTRIBUTE,
     opacity: MUST_USE_ATTRIBUTE,
     patternContentUnits: MUST_USE_ATTRIBUTE,
@@ -57,12 +64,16 @@ var SVGDOMPropertyConfig = {
     stroke: MUST_USE_ATTRIBUTE,
     strokeDasharray: MUST_USE_ATTRIBUTE,
     strokeLinecap: MUST_USE_ATTRIBUTE,
+    strokeLinejoin: MUST_USE_ATTRIBUTE,
     strokeOpacity: MUST_USE_ATTRIBUTE,
     strokeWidth: MUST_USE_ATTRIBUTE,
     textAnchor: MUST_USE_ATTRIBUTE,
     transform: MUST_USE_ATTRIBUTE,
+    values: MUST_USE_ATTRIBUTE,
     version: MUST_USE_ATTRIBUTE,
     viewBox: MUST_USE_ATTRIBUTE,
+    xlinkHref: MUST_USE_ATTRIBUTE,
+    xmlSpace: MUST_USE_ATTRIBUTE,
     x1: MUST_USE_ATTRIBUTE,
     x2: MUST_USE_ATTRIBUTE,
     x: MUST_USE_ATTRIBUTE,
@@ -71,11 +82,14 @@ var SVGDOMPropertyConfig = {
     y: MUST_USE_ATTRIBUTE
   },
   DOMAttributeNames: {
+    colorInterpolation: 'color-interpolation',
     fillOpacity: 'fill-opacity',
     fontFamily: 'font-family',
     fontSize: 'font-size',
     gradientTransform: 'gradientTransform',
     gradientUnits: 'gradientUnits',
+    imageRendering: 'image-rendering',
+    letterSpacing: 'letter-spacing',
     markerEnd: 'marker-end',
     markerMid: 'marker-mid',
     markerStart: 'marker-start',
@@ -87,10 +101,13 @@ var SVGDOMPropertyConfig = {
     stopOpacity: 'stop-opacity',
     strokeDasharray: 'stroke-dasharray',
     strokeLinecap: 'stroke-linecap',
+    strokeLinejoin: 'stroke-linejoin',
     strokeOpacity: 'stroke-opacity',
     strokeWidth: 'stroke-width',
     textAnchor: 'text-anchor',
-    viewBox: 'viewBox'
+    viewBox: 'viewBox',
+    xlinkHref: 'xlink:href',
+    xmlSpace: 'xml:space'
   }
 };
 
